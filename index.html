@@ -1,0 +1,160 @@
+# Student Performance Prediction Application
+
+Save the following code as **`student_prediction.html`** and open it in a browser.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Performance Prediction</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f6fc;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 450px;
+            margin: 60px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background: #007bff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Student Performance Prediction</h1>
+
+    <label>Attendance (%)</label>
+    <input type="number" id="attendance"
+           placeholder="Enter attendance">
+
+    <label>Study Hours per Day</label>
+    <input type="number" id="study"
+           placeholder="Enter study hours">
+
+    <label>Previous Exam Marks (%)</label>
+    <input type="number" id="marks"
+           placeholder="Enter previous marks">
+
+    <button onclick="predictPerformance()">
+        Predict Performance
+    </button>
+
+    <div id="result"></div>
+
+</div>
+
+<script>
+
+function predictPerformance() {
+
+    let attendance =
+        parseFloat(document.getElementById("attendance").value);
+
+    let study =
+        parseFloat(document.getElementById("study").value);
+
+    let marks =
+        parseFloat(document.getElementById("marks").value);
+
+    if (isNaN(attendance) ||
+        isNaN(study) ||
+        isNaN(marks)) {
+
+        document.getElementById("result").innerHTML =
+            "Please enter all values.";
+
+        return;
+    }
+
+    /*
+       Simple prediction score
+
+       Attendance = 30%
+       Study Hours = 30%
+       Previous Marks = 40%
+    */
+
+    let studyScore = Math.min((study / 8) * 100, 100);
+
+    let predictionScore =
+        (attendance * 0.30) +
+        (studyScore * 0.30) +
+        (marks * 0.40);
+
+    let result = "";
+
+    if (predictionScore >= 75) {
+
+        result = "Prediction: Excellent Performance";
+
+    }
+    else if (predictionScore >= 60) {
+
+        result = "Prediction: Good Performance";
+
+    }
+    else if (predictionScore >= 45) {
+
+        result = "Prediction: Average Performance";
+
+    }
+    else {
+```
