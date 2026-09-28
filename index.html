@@ -1,6 +1,6 @@
-# Student Performance Prediction Application
+# Online Shopping Application
 
-Save the following code as **`student_prediction.html`** and open it in a browser.
+Save this as **`shopping.html`** and open it in any browser.
 
 ```html
 <!DOCTYPE html>
@@ -9,152 +9,474 @@ Save the following code as **`student_prediction.html`** and open it in a browse
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Student Performance Prediction</title>
+    <title>Online Shopping Application</title>
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f2f6fc;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            width: 450px;
-            margin: 60px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.15);
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        label {
-            display: block;
-            margin-top: 15px;
-            font-weight: bold;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-top: 6px;
+        * {
             box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+
+        header {
+            background: #2874f0;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .cart {
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .search-area {
+            text-align: center;
+            padding: 20px;
+            background: white;
+        }
+
+        #search {
+            width: 60%;
+            padding: 12px;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
 
+        .products {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 30px;
+        }
+
+        .product {
+            width: 230px;
+            background: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #ccc;
+        }
+
+        .product img {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+        }
+
+        .product h3 {
+            margin: 10px 0;
+        }
+
+        .price {
+            color: green;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
         button {
-            width: 100%;
-            margin-top: 25px;
-            padding: 12px;
-            border: none;
-            border-radius: 5px;
-            background: #007bff;
+            background: #2874f0;
             color: white;
-            font-size: 16px;
+            border: none;
+            padding: 10px 15px;
+            margin-top: 10px;
+            border-radius: 5px;
             cursor: pointer;
         }
 
         button:hover {
-            background: #0056b3;
+            background: #1255c5;
         }
 
-        #result {
-            margin-top: 20px;
-            padding: 15px;
+        #cartBox {
+            width: 80%;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #ccc;
+        }
+
+        #cartItems {
+            margin-bottom: 15px;
+        }
+
+        .cart-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .remove {
+            background: red;
+            margin-left: 10px;
+        }
+
+        .checkout {
+            background: green;
+            font-size: 16px;
+        }
+
+        footer {
+            background: #222;
+            color: white;
             text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 5px;
+            padding: 15px;
+            margin-top: 30px;
         }
     </style>
 </head>
 
 <body>
 
-<div class="container">
+<header>
 
-    <h1>Student Performance Prediction</h1>
+    <h1>My Online Store</h1>
 
-    <label>Attendance (%)</label>
-    <input type="number" id="attendance"
-           placeholder="Enter attendance">
+    <div class="cart">
+        🛒 Cart: <span id="cartCount">0</span>
+    </div>
 
-    <label>Study Hours per Day</label>
-    <input type="number" id="study"
-           placeholder="Enter study hours">
+</header>
 
-    <label>Previous Exam Marks (%)</label>
-    <input type="number" id="marks"
-           placeholder="Enter previous marks">
 
-    <button onclick="predictPerformance()">
-        Predict Performance
-    </button>
+<div class="search-area">
 
-    <div id="result"></div>
+    <input
+        type="text"
+        id="search"
+        placeholder="Search products..."
+        onkeyup="searchProducts()"
+    >
 
 </div>
 
+
+<div class="products" id="productList">
+
+    <div class="product" data-name="Laptop">
+
+        <img src="https://via.placeholder.com/150?text=Laptop">
+
+        <h3>Laptop</h3>
+
+        <p>High performance laptop</p>
+
+        <p class="price">₹55,000</p>
+
+        <button onclick="addToCart('Laptop', 55000)">
+            Add to Cart
+        </button>
+
+    </div>
+
+
+    <div class="product" data-name="Mobile Phone">
+
+        <img src="https://via.placeholder.com/150?text=Mobile">
+
+        <h3>Mobile Phone</h3>
+
+        <p>Smartphone with 5G</p>
+
+        <p class="price">₹25,000</p>
+
+        <button onclick="addToCart('Mobile Phone', 25000)">
+            Add to Cart
+        </button>
+
+    </div>
+
+
+    <div class="product" data-name="Headphones">
+
+        <img src="https://via.placeholder.com/150?text=Headphones">
+
+        <h3>Headphones</h3>
+
+        <p>Wireless headphones</p>
+
+        <p class="price">₹2,500</p>
+
+        <button onclick="addToCart('Headphones', 2500)">
+            Add to Cart
+        </button>
+
+    </div>
+
+
+    <div class="product" data-name="Smart Watch">
+
+        <img src="https://via.placeholder.com/150?text=Watch">
+
+        <h3>Smart Watch</h3>
+
+        <p>Fitness smart watch</p>
+
+        <p class="price">₹4,000</p>
+
+        <button onclick="addToCart('Smart Watch', 4000)">
+            Add to Cart
+        </button>
+
+    </div>
+
+
+    <div class="product" data-name="Keyboard">
+
+        <img src="https://via.placeholder.com/150?text=Keyboard">
+
+        <h3>Keyboard</h3>
+
+        <p>Wireless keyboard</p>
+
+        <p class="price">₹1,500</p>
+
+        <button onclick="addToCart('Keyboard', 1500)">
+            Add to Cart
+        </button>
+
+    </div>
+
+
+    <div class="product" data-name="Mouse">
+
+        <img src="https://via.placeholder.com/150?text=Mouse">
+
+        <h3>Mouse</h3>
+
+        <p>Wireless mouse</p>
+
+        <p class="price">₹800</p>
+
+        <button onclick="addToCart('Mouse', 800)">
+            Add to Cart
+        </button>
+
+    </div>
+
+</div>
+
+
+<div id="cartBox">
+
+    <h2>Shopping Cart</h2>
+
+    <div id="cartItems">
+        Cart is empty.
+    </div>
+
+    <h3>
+        Total: ₹<span id="total">0</span>
+    </h3>
+
+    <button class="checkout" onclick="checkout()">
+        Checkout
+    </button>
+
+</div>
+
+
+<footer>
+
+    <p>© 2026 My Online Store</p>
+
+</footer>
+
+
 <script>
 
-function predictPerformance() {
+let cart = [];
 
-    let attendance =
-        parseFloat(document.getElementById("attendance").value);
 
-    let study =
-        parseFloat(document.getElementById("study").value);
+// Add product to cart
+function addToCart(name, price) {
 
-    let marks =
-        parseFloat(document.getElementById("marks").value);
+    let existingProduct = cart.find(
+        item => item.name === name
+    );
 
-    if (isNaN(attendance) ||
-        isNaN(study) ||
-        isNaN(marks)) {
+    if (existingProduct) {
 
-        document.getElementById("result").innerHTML =
-            "Please enter all values.";
+        existingProduct.quantity++;
+
+    } else {
+
+        cart.push({
+            name: name,
+            price: price,
+            quantity: 1
+        });
+
+    }
+
+    displayCart();
+}
+
+
+// Display cart
+function displayCart() {
+
+    let cartItems =
+        document.getElementById("cartItems");
+
+    let total = 0;
+
+    let count = 0;
+
+    cartItems.innerHTML = "";
+
+
+    if (cart.length === 0) {
+
+        cartItems.innerHTML = "Cart is empty.";
+
+    }
+
+
+    cart.forEach((item, index) => {
+
+        let itemTotal =
+            item.price * item.quantity;
+
+        total += itemTotal;
+
+        count += item.quantity;
+
+
+        cartItems.innerHTML += `
+
+            <div class="cart-item">
+
+                <strong>${item.name}</strong>
+
+                - ₹${item.price}
+
+                × ${item.quantity}
+
+                = ₹${itemTotal}
+
+                <button
+                    class="remove"
+                    onclick="removeFromCart(${index})">
+                    Remove
+                </button>
+
+            </div>
+
+        `;
+
+    });
+
+
+    document.getElementById("total").innerText =
+        total;
+
+    document.getElementById("cartCount").innerText =
+        count;
+}
+
+
+// Remove product
+function removeFromCart(index) {
+
+    cart.splice(index, 1);
+
+    displayCart();
+}
+
+
+// Search products
+function searchProducts() {
+
+    let searchText =
+        document.getElementById("search")
+        .value
+        .toLowerCase();
+
+    let products =
+        document.querySelectorAll(".product");
+
+
+    products.forEach(product => {
+
+        let name =
+            product.getAttribute("data-name")
+            .toLowerCase();
+
+
+        if (name.includes(searchText)) {
+
+            product.style.display = "block";
+
+        } else {
+
+            product.style.display = "none";
+
+        }
+
+    });
+
+}
+
+
+// Checkout
+function checkout() {
+
+    if (cart.length === 0) {
+
+        alert("Your cart is empty!");
 
         return;
     }
 
-    /*
-       Simple prediction score
 
-       Attendance = 30%
-       Study Hours = 30%
-       Previous Marks = 40%
-    */
+    let total =
+        document.getElementById("total").innerText;
 
-    let studyScore = Math.min((study / 8) * 100, 100);
 
-    let predictionScore =
-        (attendance * 0.30) +
-        (studyScore * 0.30) +
-        (marks * 0.40);
+    alert(
+        "Order placed successfully!\n\n" +
+        "Total Amount: ₹" + total
+    );
 
-    let result = "";
 
-    if (predictionScore >= 75) {
+    cart = [];
 
-        result = "Prediction: Excellent Performance";
+    displayCart();
+}
 
-    }
-    else if (predictionScore >= 60) {
+</script>
 
-        result = "Prediction: Good Performance";
-
-    }
-    else if (predictionScore >= 45) {
-
-        result = "Prediction: Average Performance";
-
-    }
-    else {
+</body>
+</html>
 ```
+
+### Features demonstrated
+
+1. **Product display**
+2. **Product search**
+3. **Add to Cart**
+4. **Quantity management**
+5. **Remove from Cart**
+6. **Automatic total calculation**
+7. **Checkout**
+8. **Responsive product layout**
+9. **JavaScript DOM manipulation**
+
+### Application flow
+
+**Product Selection → Add to Cart → Cart Management → Total Calculation → Checkout**
+
+This is suitable as a **basic Web Technology / HTML-CSS-JavaScript mini-project**. For a more advanced version, you can add **login/signup, product categories, product details, localStorage, payment page, order history, and a PHP/MySQL backend**.
